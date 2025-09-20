@@ -1,4 +1,4 @@
-# Tetrio-bot
+# Tetris-Heuristic-AI
 
 color matching and brute forcing best combinations and rotations for any tetris game tetr.io/jstris (change color in python file)
 
