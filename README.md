@@ -2,10 +2,6 @@
 
 color matching and brute forcing best combinations and rotations for any tetris game tetr.io/jstris (change color in python file)
 
-## Demo
-
-https://user-images.githubusercontent.com/83382087/240593118-c6c66916-ae01-4e73-a2ca-e79132c9c7b1.mp4
-
 ## Installation
 
 Clone repo

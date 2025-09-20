@@ -26,8 +26,8 @@ move_left_key = 'left'
 move_right_key = 'right'
 drop_key = 'space'
 # constants - ARR 0ms - DAS 40ms
-calculation_accuracy = 12 # number of best moves to keep at each depth - higher number means more accurate but slower
-max_depth = 12 # number of moves into the future to simulate, max is 6, you can only see 6 blocks at once - higher number means more accurate but slower
+calculation_accuracy = 13 # number of best moves to keep at each depth - higher number means more accurate but slower
+max_depth = 13 # number of moves into the future to simulate, max is 6, you can only see 6 blocks at once - higher number means more accurate but slower
 wait_time = 0.04 # time to wait, can't go too low because you need to wait for screen to refresh
 scan_board = True # some modes require scanning the board because of extra pieces - zen, multiplayer
 jstris = False # jstris mode - changes colors
@@ -259,35 +259,48 @@ def place_block(board, rotated_block, position):
 def euclidean_distance(color1, color2):
     return math.sqrt(sum((a - b) ** 2 for a, b in zip(color1, color2)))
 
-def closest_color_in_area(colors, x, y):
+def closest_color_in_area(colors, x, y, confidence_threshold=15, sample_points=5):
     min_diff = float('inf')
     closest_color = (0, 0, 0)
-    while min_diff > 20:
-        # break if esc
+    attempts = 0
+    max_attempts = 3
+    
+    while min_diff > confidence_threshold and attempts < max_attempts:
         if keyboard.is_pressed('esc'):
             break
-        # get pixel colors in a 10 by 10 around x and y
-        target_colors = []
-        # Grab a portion of the screen
-        half = pixel_area//2
-        full = half * 2
-        image = ImageGrab.grab(bbox=(x - half, y - half, x + half, y + half))
-        # Loop through the pixels in the grabbed image
-        for i in range(full):
-            for j in range(full):
-                target_colors.append(image.getpixel((i, j)))
 
-        # find the closest color in target_colors that is in colors
-        closest_color = (0, 0, 0)
-        min_diff = float('inf')
-        for target_color in target_colors:
-            for color in colors:
-                diff = euclidean_distance(color, target_color)
-                if diff < min_diff:
-                    min_diff = diff
-                    closest_color = color
-                if min_diff < 20:
-                    break
+        sample_offsets = [(0, 0), (-pixel_area//4, -pixel_area//4), 
+                         (pixel_area//4, -pixel_area//4), (-pixel_area//4, pixel_area//4), 
+                         (pixel_area//4, pixel_area//4)]
+        
+        color_votes = {}
+        
+        for offset_x, offset_y in sample_offsets:
+            try:
+                image = ImageGrab.grab(bbox=(x + offset_x, y + offset_y, 
+                                           x + offset_x + 1, y + offset_y + 1))
+                pixel_color = image.getpixel((0, 0))
+                
+                for color in colors:
+                    diff = euclidean_distance(color, pixel_color)
+                    if diff < confidence_threshold * 1.5:
+                        if color not in color_votes:
+                            color_votes[color] = []
+                        color_votes[color].append(diff)
+                        
+            except Exception as e:
+                continue
+
+        if color_votes:
+            best_color = min(color_votes.keys(), 
+                           key=lambda c: sum(color_votes[c]) / len(color_votes[c]))
+            min_diff = sum(color_votes[best_color]) / len(color_votes[best_color])
+            closest_color = best_color
+            break
+        
+        attempts += 1
+        confidence_threshold += 5
+        
     return tuple(closest_color)
 
 def get_piece_based_on_color(matched_color, colors):
@@ -313,10 +326,12 @@ def get_piece_based_on_color(matched_color, colors):
     elif matched_color == colors[6]:
         # print('Purple - T')
         piece = tetris_pieces['T']
-    if piece is None:
-        print('No piece found')
-    return piece
 
+    if piece is None:
+        print(f'No piece found for color {matched_color}, using default T piece')
+        piece = tetris_pieces['T']
+    
+    return piece
 
 # Create a new board
 tetrisboard = TetrisBoard()
@@ -467,6 +482,12 @@ while True:
             start_time3 = time.time()
             closest_color5 = closest_color_in_area(colors, x5, y5)
             piece_array.append(get_piece_based_on_color(closest_color5, colors))
+
+            piece_array = [piece for piece in piece_array if piece is not None]
+            if len(piece_array) < max_depth:
+                while len(piece_array) < max_depth:
+                    random_piece = tetris_pieces[list(tetris_pieces.keys())[np.random.randint(len(tetris_pieces))]]
+                    piece_array.append(random_piece)
             print("time for get color: ", time.time() - start_time)
             if scan_board:
                 # time to get board
