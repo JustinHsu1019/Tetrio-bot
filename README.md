@@ -11,15 +11,13 @@ https://user-images.githubusercontent.com/83382087/240593118-c6c66916-ae01-4e73-
 Clone repo
 
 ```
-git clone https://github.com/AlexanderLJX/Tetrio-bot.git
+git clone https://github.com/JustinHsu1019/Tetrio-bot.git
 cd Tetrio-bot
 ```
 
-Download and install Anaconda from [anaconda.com/download](https://www.anaconda.com/download/) and add it to your environment path.
-
 ```
-conda create -n tetrio python=3.10
-conda activate tetrio
+python venv venvtetrio
+source venvtetrio/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -28,14 +26,13 @@ pip install -r requirements.txt
 1. Run python script
 
 ```
-conda activate tetrio
-python test.py
+python main.py
 ```
 
 2. Set the coordinates of first and second block while waiting for the countdown in tetrio
 
 
-![screenshot](https://github.com/AlexanderLJX/Tetrio-bot/assets/83382087/c6b4ab6c-05e6-4eb1-b8b3-eb86a21980ce)
+![screenshot](https://github.com/JustinHsu1019/Tetrio-bot/assets/83382087/c6b4ab6c-05e6-4eb1-b8b3-eb86a21980ce)
 
 - Hover your cursor over somewhere below the middle of the first block and press `[`
 - Hover your cursor over somewhere below the middle of the last block and press `]`
@@ -59,7 +56,7 @@ Configure additional settings directly in the script
 
 Using the bot may get your IP and Account banned, advised not to break the world record.
 
-![Capture](https://github.com/AlexanderLJX/Tetrio-bot/assets/83382087/8ea50bc0-ffd8-49b6-8a26-23fe7e1b21f1)
+![Capture](https://github.com/JustinHsu1019/Tetrio-bot/assets/83382087/8ea50bc0-ffd8-49b6-8a26-23fe7e1b21f1)
 
 
 ## To-do

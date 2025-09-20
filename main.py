@@ -1,3 +1,4 @@
+# main.py
 import keyboard
 import time
 import numpy as np
@@ -25,8 +26,8 @@ move_left_key = 'left'
 move_right_key = 'right'
 drop_key = 'space'
 # constants - ARR 0ms - DAS 40ms
-calculation_accuracy = 5 # number of best moves to keep at each depth - higher number means more accurate but slower
-max_depth = 6 # number of moves into the future to simulate, max is 6, you can only see 6 blocks at once - higher number means more accurate but slower
+calculation_accuracy = 12 # number of best moves to keep at each depth - higher number means more accurate but slower
+max_depth = 12 # number of moves into the future to simulate, max is 6, you can only see 6 blocks at once - higher number means more accurate but slower
 wait_time = 0.04 # time to wait, can't go too low because you need to wait for screen to refresh
 scan_board = True # some modes require scanning the board because of extra pieces - zen, multiplayer
 jstris = False # jstris mode - changes colors
