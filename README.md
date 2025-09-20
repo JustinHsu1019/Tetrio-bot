@@ -27,9 +27,6 @@ python main.py
 
 2. Set the coordinates of first and second block while waiting for the countdown in tetrio
 
-
-![screenshot](https://github.com/JustinHsu1019/Tetrio-bot/assets/83382087/c6b4ab6c-05e6-4eb1-b8b3-eb86a21980ce)
-
 - Hover your cursor over somewhere below the middle of the first block and press `[`
 - Hover your cursor over somewhere below the middle of the last block and press `]`
 - Hover your cursor over the top left of the tetris board and press `-`
@@ -47,14 +44,3 @@ Configure additional settings directly in the script
 - Set Graphics Minimal for optimum performance
 - Default Guideline Controls
 - Make sure tetris pieces are default color
-
-## Advisory
-
-Using the bot may get your IP and Account banned, advised not to break the world record.
-
-![Capture](https://github.com/JustinHsu1019/Tetrio-bot/assets/83382087/8ea50bc0-ffd8-49b6-8a26-23fe7e1b21f1)
-
-
-## To-do
-- T-spins
-- cython version
